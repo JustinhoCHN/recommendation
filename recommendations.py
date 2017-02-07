@@ -54,7 +54,7 @@ critics = {
 		}			
 }
 
-#基于欧几里得距离的相似度评价函数
+#基于欧几里得距离的相似度评价函数，计算两用户间的相似度
 def sim_distance(prefs, person1, person2):
 	#得到shared_items的列表
 	si = {} #"si" = "Share Items"
@@ -71,7 +71,7 @@ def sim_distance(prefs, person1, person2):
 							for item in prefs[person1] if item in prefs[person2])
 	return 1 / (1 + sqrt(sum_of_squares))
 
-#皮尔逊相关系数
+#皮尔逊相关系数，计算两用户间的相似度
 def sim_pearson(prefs,p1,p2):
   # Get the list of mutually rated items
   si={}
@@ -113,7 +113,7 @@ def topMatches(prefs,person,n=5,similarity=sim_pearson):
   scores.reverse() #对该用户与其它用户的相似度列表进行倒序排名
   return scores[0:n] #返回相似对最高的前n个用户，格式为：[(相似度，用户1)，...]
 
-#推荐物品
+#基于用户的协同过滤算法来推荐物品
 def getRecommendations(prefs, person, similarity = sim_pearson):
 	totals = {} #建立一个字典，用于存放每部电影的评分总计值
 	simSums = {} #建立一个字典，用于存放该用户与其他人的相似度总和
@@ -166,6 +166,71 @@ def calculateSimilarItems(prefs,n=10):
 		scores = topMatches(itemPrefs, item, n = n, similarity = sim_distance)
 		result[item] = scores
 	return result
+
+#对该名用户提供基于物品的推荐
+def getRecommendedItems(prefs, itemMatch, user):
+	userRatings = prefs[user]#读取出该用户的评分列表
+	scores = {}#字典格式：{item1:val1,item2:val2,...}
+	totalSim = {}#字典格式同上
+	
+	for (item,rating) in userRatings.items():
+		
+		for (similarity, item2) in itemMatch[item] :#itemMatch为item与其它物品间的相似度similarity的字典
+			#格式为：{item1:[(sim1,other),...],item2:[(sim1,other),...]，...}，相当于上面的返回的result。
+			
+			#忽略已评分的项目
+			if item2 in userRatings: continue
+			
+			#计算两物品间的加权分值：sim * rating，保存于scores字典中
+			scores.setdefault(item2, 0)
+			scores[item2] += similarity * rating
+			
+			totalSim.setdefault(item2, 0)
+			totalSim[item2] += similarity
+		
+	rankings = [(score/totalSim[item],item) for item,score in scores.items()]
+	#对该用户返回一个排序的推荐列表，格式为[(预测评分值，物品名字)，...]
+	rankings.sort()
+	rankings.reverse()
+	return rankings
+
+#以下为获取movielens数据集
+def loadMovieLens(path='/data/movielens'):
+  # Get movie titles
+  movies={}
+  for line in open(path+'/u.item'):
+    (id,title)=line.split('|')[0:2]
+    movies[id]=title
+  
+  # Load data
+  prefs={}
+  for line in open(path+'/u.data'):
+    (user,movieid,rating,ts)=line.split('\t')
+    prefs.setdefault(user,{})
+    prefs[user][movies[movieid]]=float(rating)
+  return prefs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	
 	
