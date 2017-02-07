@@ -1,0 +1,23 @@
+import requests
+
+d_url = 'https://api.convertlab.com/v1/customers/9767652?access_token=9af4dce4a28d2d2aac503b93c902ed7e'
+
+v3 = requests.get(d_url,'get')
+
+
+
+v1.status_code
+v1.headers['content-type']
+v1.headers['date']
+v1.headers['content-type']
+v1.headers['content-type']
+v1.encoding
+v1.text
+v1.json()
+v1.headers()
+
+
+if v1.status_code == requests.codes.ok:
+    print (v1.content)
+
+
