@@ -4,11 +4,11 @@ from math import sqrt
 #以下是数据集
 critics = {
 'Lisa Rose':{
-			'Lady in the Water' : 2.5,
-			'Snake on a Plane' : 3.5,
-			'Just My Luck' : 3.0,
-			'Superman Returns' : 3.5,
-			'You, Me and Dupree' : 2.5,
+			'Lady in the Water' : 2.5,...
+			'Snake on a Plane' : 3.5,...
+			'Just My Luck' : 3.0,...
+			'Superman Returns' : 3.5,...
+			'You, Me and Dupree' : 2.5,...
 			'The Night Listener' : 3.0
 			} ,
 'Gene Seymour' : {
