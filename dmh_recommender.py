@@ -1,17 +1,6 @@
 from math import sqrt
-
-
-
-
 #提取txt内客户阅读内容标签信息，格式为字典，user_tag_train = {users:{tags:times},...}
 user_tag_train = {}
-
-
-
-#################################
-
-
-
 #生成物品矩阵
 itemsim_mat = {}
 item_dict = {}
@@ -77,8 +66,3 @@ user_tag_train =
 item_dict = itemmat(user_tag_train)
 itemsim_mat = commonmat(user_tag_train，item_dict,simfactor_count = 1)
 recommend_list = recommend(user, k, n)
-
-
-
-
-
